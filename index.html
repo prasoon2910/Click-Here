@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Devayosa</title>
+  <title>valentine</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <style>
@@ -20,6 +20,7 @@
     .container {
       text-align: center;
       color: white;
+      z-index: 1;
     }
 
     h1 {
@@ -58,13 +59,15 @@
       100% { transform: translateX(0); }
     }
 
-    /* Hearts */
-    .heart {
+    /* Heart rain container */
+    #heart-container {
       position: fixed;
-      top: -20px;
-      font-size: 26px;
-      animation: fall linear forwards;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       pointer-events: none;
+      z-index: 9999;
     }
 
     @keyframes fall {
@@ -107,14 +110,18 @@
 
 <body>
   <div class="container">
-    <h1>Hey 🥺💘<br>Will you be my Valentine?</h1>
+    <h1>Hey, Devayosa 🥺💘<br>Will you be my Valentine?</h1>
     <button id="yes">Yes 💚</button>
     <button id="no">No 💔</button>
   </div>
 
+  <!-- Heart container -->
+  <div id="heart-container"></div>
+
   <script>
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
+    const heartContainer = document.getElementById("heart-container");
 
     function moveNoButton() {
       const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
@@ -129,11 +136,15 @@
     function heartRain() {
       for (let i = 0; i < 40; i++) {
         const heart = document.createElement("div");
-        heart.className = "heart";
         heart.innerText = "💖";
+        heart.style.position = "absolute";
         heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (2 + Math.random() * 2) + "s";
-        document.body.appendChild(heart);
+        heart.style.top = "-30px";
+        heart.style.fontSize = "26px";
+        heart.style.animation =
+          `fall ${2 + Math.random() * 2}s linear forwards`;
+
+        heartContainer.appendChild(heart);
         setTimeout(() => heart.remove(), 4000);
       }
     }
@@ -141,22 +152,22 @@
     yesBtn.onclick = () => {
       heartRain();
 
-      document.body.innerHTML = `
-        <div class="chat">
-          <div class="bubble received">
-            Will you be my Valentine? 💘
+      setTimeout(() => {
+        document.body.innerHTML = `
+          <div class="chat">
+            <div class="bubble received">
+              Will you be my Valentine? 💘
+            </div>
+            <div class="bubble sent">
+              Yes 💚
+            </div>
+            <div class="bubble received">
+              OMG 😭💖<br>
+              Valentine secured 😌🔥
+            </div>
           </div>
-
-          <div class="bubble sent">
-            Yes 💚
-          </div>
-
-          <div class="bubble received">
-            OMG 😭💖<br>
-            Valentine secured 😌🔥
-          </div>
-        </div>
-      `;
+        `;
+      }, 1200);
 
       setTimeout(() => {
         window.location.href =
@@ -166,5 +177,3 @@
   </script>
 </body>
 </html>
-
-
